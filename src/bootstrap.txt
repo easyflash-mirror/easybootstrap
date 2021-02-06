@@ -1,0 +1,37 @@
+1 goto 70
+
+4 gosub 8
+5 v=asc(e$):e$=mid$(e$,2)
+6 v=v-65:if v<0 then v=v+41
+7 return
+8 a=a and 255:poke s,a:s=s+1:cs=cs-a:return
+
+70 s=49152:k=s
+80 read bk, cs
+90 for i=1 to bk
+100 read e$
+110 gosub5:a=v*8
+120 gosub5:a=a+v/4:b=v*64
+140 gosub4:a=b+v*2
+150 gosub5:a=a+v/16:b=v*16
+170 gosub4:a=b+v/2:b=v*128
+190 gosub4:a=b+v*4
+200 gosub5:a=a+v/8:b=v*32
+220 gosub4:a=b+v
+230 gosub8
+240 next
+250 if cs then print "checksum error, typo?":end
+
+260 open 1,8,1,"@0:outfile"
+270 if st then print"failed to open file":goto 800
+
+300 print"waiting for usb..."
+310 sys k
+320 print"transferring..."
+330 sys k+3
+
+800 close 1
+810 open 1,8,15
+820 input#1,a$,b$,c$,d$
+830 print a$,b$,c$,d$
+840 close 1
