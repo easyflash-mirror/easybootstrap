@@ -5,7 +5,6 @@ CHKOUT = $FFC9
 CHROUT = $FFD2
 CLRCHN = $FFCC
 
-USB_ID     = $de08
 USB_STATUS = $de09
 USB_DATA   = $de0a
 
