@@ -1,4 +1,3 @@
-import base64
 
 f = open("out/xfer.bin", "rb")
 data = None
@@ -7,20 +6,20 @@ with open("out/xfer.bin", "rb") as f:
     data = f.read()
 
 blocks = []
+data_len = len(data)
 checksum = sum(data)
 
-data = data.ljust((len(data) + 4) // 5 * 5, b'\0')
 while data:
-    block = data[:5]
-    data = data[5:]
-    s = base64.b32encode(block).decode().lower()
+    block = data[:3]
+    data = data[3:]
+    s = block.hex()
     blocks.append(s)
 
-print(f'900 data {len(blocks)}, {checksum}')
-line = 901
+print(f'50 data {data_len},{checksum}')
+line = 51
 while len(blocks):
-    if len(blocks) > 1:
-        print(f'{line} data "{blocks.pop(0)}", "{blocks.pop(0)}"')
-    else:
-        print(f'{line} data "{blocks.pop(0)}"')
+    left = blocks[:4]
+    blocks = blocks[4:]
+    s = " ".join(left)
+    print(f'{line} data "{s}"')
     line += 1
